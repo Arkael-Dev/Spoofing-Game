@@ -1,0 +1,26 @@
+#!/system/bin/sh
+MODDIR="${0%/*}"
+[ -f "$MODDIR/config.conf" ] && . "$MODDIR/config.conf" || . "$MODDIR/config.default"
+[ "$ENABLED" = "1" ] || exit 0
+until [ "$(getprop sys.boot_completed)" = "1" ]; do sleep 1; done
+F="/dev/cpuinfo_$$"
+{
+  echo "Processor       : AArch64 Processor rev 4 (aarch64)"
+  for i in 0 1 2 3 4 5 6 7; do
+    if [ $i -lt 4 ]; then PART=0x801; REV=4; else PART=0x800; REV=2; fi
+    echo "processor       : $i"
+    echo "BogoMIPS        : 38.40"
+    echo "Features        : fp asimd evtstrm aes pmull sha1 sha2 crc32"
+    echo "CPU implementer : 0x51"
+    echo "CPU architecture: 8"
+    echo "CPU variant     : 0xa"
+    echo "CPU part        : $PART"
+    echo "CPU revision    : $REV"
+    echo
+  done
+  echo "Hardware : Qualcomm Technologies, Inc $SOC"
+} > "$F"
+chcon u:object_r:system_file:s0 "$F"
+chmod 444 "$F"
+chown 0.0 "$F"
+mount --bind "$F" /proc/cpuinfo
