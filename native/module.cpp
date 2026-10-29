@@ -44,9 +44,13 @@ static void h_vk2(VkPhysicalDevice d, VkPhysicalDeviceProperties2 *p) { o_vk2(d,
 static PFN_vkGetPhysicalDeviceProperties2 o_vk2k;
 static void h_vk2k(VkPhysicalDevice d, VkPhysicalDeviceProperties2 *p) { o_vk2k(d, p); if (p) setName(&p->properties); }
 
+// Works with any Dobby version: the cast types are deduced from DobbyHook itself.
+template <typename R, typename A, typename B, typename C>
+static R callHook(R (*f)(A, B, C), void *a, void *b, void **c) { return f((A) a, (B) b, (C) c); }
+
 static void hookSym(void *lib, const char *name, void *repl, void **orig) {
     void *addr = lib ? dlsym(lib, name) : nullptr;
-    if (addr) DobbyHook(addr, (dobby_dummy_func_t) repl, (dobby_dummy_func_t *) orig);
+    if (addr) callHook(&DobbyHook, addr, repl, orig);
 }
 
 static void installHooks() {

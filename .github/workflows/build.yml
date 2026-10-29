@@ -14,18 +14,7 @@ jobs:
       - name: Cek syntax script
         run: for f in install.sh UNLOCKER apply.sh common/*.sh; do sh -n "$f" || exit 1; done
       - name: Build Zygisk GPU hook
-        run: |
-          NDK="${ANDROID_NDK_LATEST_HOME:-$ANDROID_NDK_HOME}"
-          cd native
-          curl -fsSL https://raw.githubusercontent.com/topjohnwu/zygisk-module-sample/master/module/jni/zygisk.hpp -o zygisk.hpp
-          git clone --depth 1 https://github.com/jmpews/Dobby.git Dobby
-          cmake -B build -DCMAKE_TOOLCHAIN_FILE="$NDK/build/cmake/android.toolchain.cmake" \
-            -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 -DANDROID_STL=c++_static \
-            -DCMAKE_BUILD_TYPE=Release
-          cmake --build build -j"$(nproc)"
-          mkdir -p ../zygisk
-          cp build/arm64-v8a.so ../zygisk/arm64-v8a.so
-          "$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip" ../zygisk/arm64-v8a.so || true
+        run: bash native/build.sh
       - name: Package
         id: pkg
         run: |
