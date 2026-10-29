@@ -7,7 +7,8 @@
 #include <string>
 #include <vulkan/vulkan.h>
 #include "zygisk.hpp"
-#include "dobby.h"
+#include <pthread.h>
+#include "gothook.h"
 
 static std::string g_renderer, g_vendor;
 
@@ -44,22 +45,59 @@ static void h_vk2(VkPhysicalDevice d, VkPhysicalDeviceProperties2 *p) { o_vk2(d,
 static PFN_vkGetPhysicalDeviceProperties2 o_vk2k;
 static void h_vk2k(VkPhysicalDevice d, VkPhysicalDeviceProperties2 *p) { o_vk2k(d, p); if (p) setName(&p->properties); }
 
-// Works with any Dobby version: the cast types are deduced from DobbyHook itself.
-template <typename R, typename A, typename B, typename C>
-static R callHook(R (*f)(A, B, C), void *a, void *b, void **c) { return f((A) a, (B) b, (C) c); }
+typedef void *(*Gpa_t)(const char *);
+static Gpa_t o_egl;
+static PFN_vkGetInstanceProcAddr o_gipa;
 
-static void hookSym(void *lib, const char *name, void *repl, void **orig) {
-    void *addr = lib ? dlsym(lib, name) : nullptr;
-    if (addr) callHook(&DobbyHook, addr, repl, orig);
+static void *h_egl(const char *n) {
+    if (n && strcmp(n, "glGetString") == 0 && o_glGetString) return (void *) h_glGetString;
+    return o_egl ? o_egl(n) : nullptr;
+}
+static PFN_vkVoidFunction h_gipa(VkInstance i, const char *n) {
+    PFN_vkVoidFunction p = o_gipa(i, n);
+    if (!p || !n) return p;
+    if (!strcmp(n, "vkGetPhysicalDeviceProperties")) { o_vk1 = (PFN_vkGetPhysicalDeviceProperties) p; return (PFN_vkVoidFunction) h_vk1; }
+    if (!strcmp(n, "vkGetPhysicalDeviceProperties2")) { o_vk2 = (PFN_vkGetPhysicalDeviceProperties2) p; return (PFN_vkVoidFunction) h_vk2; }
+    if (!strcmp(n, "vkGetPhysicalDeviceProperties2KHR")) { o_vk2k = (PFN_vkGetPhysicalDeviceProperties2) p; return (PFN_vkVoidFunction) h_vk2k; }
+    return p;
+}
+
+static gothook::Entry g_entries[8];
+static int g_n = 0;
+static uintptr_t g_self = 0;
+
+static void add(const char *sym, void *repl) { g_entries[g_n++] = {sym, repl}; }
+
+// Only game libraries under /data are patched, never system libraries.
+static void *scanner(void *) {
+    for (int i = 0; i < 120; i++) {
+        gothook::scan(g_entries, g_n, "/data/", g_self);
+        usleep(500000);
+    }
+    return nullptr;
 }
 
 static void installHooks() {
+    Dl_info di;
+    if (dladdr((void *) &installHooks, &di)) g_self = (uintptr_t) di.dli_fbase;
     void *gl = dlopen("libGLESv2.so", RTLD_NOW);
-    hookSym(gl, "glGetString", (void *) h_glGetString, (void **) &o_glGetString);
+    if (gl && (o_glGetString = (GetString_t) dlsym(gl, "glGetString"))) add("glGetString", (void *) h_glGetString);
+    void *egl = dlopen("libEGL.so", RTLD_NOW);
+    if (egl && (o_egl = (Gpa_t) dlsym(egl, "eglGetProcAddress"))) add("eglGetProcAddress", (void *) h_egl);
     void *vk = dlopen("libvulkan.so", RTLD_NOW);
-    hookSym(vk, "vkGetPhysicalDeviceProperties", (void *) h_vk1, (void **) &o_vk1);
-    hookSym(vk, "vkGetPhysicalDeviceProperties2", (void *) h_vk2, (void **) &o_vk2);
-    hookSym(vk, "vkGetPhysicalDeviceProperties2KHR", (void *) h_vk2k, (void **) &o_vk2k);
+    if (vk) {
+        o_vk1 = (PFN_vkGetPhysicalDeviceProperties) dlsym(vk, "vkGetPhysicalDeviceProperties");
+        o_vk2 = (PFN_vkGetPhysicalDeviceProperties2) dlsym(vk, "vkGetPhysicalDeviceProperties2");
+        o_vk2k = (PFN_vkGetPhysicalDeviceProperties2) dlsym(vk, "vkGetPhysicalDeviceProperties2KHR");
+        o_gipa = (PFN_vkGetInstanceProcAddr) dlsym(vk, "vkGetInstanceProcAddr");
+        if (o_vk1) add("vkGetPhysicalDeviceProperties", (void *) h_vk1);
+        if (o_vk2) add("vkGetPhysicalDeviceProperties2", (void *) h_vk2);
+        if (o_vk2k) add("vkGetPhysicalDeviceProperties2KHR", (void *) h_vk2k);
+        if (o_gipa) add("vkGetInstanceProcAddr", (void *) h_gipa);
+    }
+    if (!g_n) return;
+    pthread_t th;
+    if (pthread_create(&th, nullptr, scanner, nullptr) == 0) pthread_detach(th);
 }
 
 class SpoofGpu : public zygisk::ModuleBase {
