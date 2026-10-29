@@ -2,7 +2,7 @@
 
 ![Build](https://github.com/Arkael-Dev/Spoofing-Game/actions/workflows/build.yml/badge.svg)
 
-**EN** KernelSU / KernelSU Next / Magisk module that spoofs device model, SoC and GPU so games unlock higher graphics and FPS options. Default: POCO F9 Ultra (`26077PC53G`, Adreno 840). Everything is editable in the WebUI.
+**EN** KernelSU / KernelSU Next / Magisk module that spoofs device model, SoC and GPU so games unlock higher graphics and FPS options. Default: POCO F8 Ultra (`25102PCBEG`, Adreno 840). Everything is editable in the WebUI.
 **ID** Modul KernelSU / KernelSU Next / Magisk untuk spoof model, SoC, dan GPU supaya game membuka opsi grafik dan FPS lebih tinggi. Semua bisa diubah di WebUI.
 
 ## Features / Fitur
