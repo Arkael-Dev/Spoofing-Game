@@ -68,10 +68,12 @@ static uintptr_t g_self = 0;
 
 static void add(const char *sym, void *repl) { g_entries[g_n++] = {sym, repl}; }
 
-// Only game libraries under /data are patched, never system libraries.
+// Patches app libraries under /data and, inside the app only, the Java GLES bridge.
 static void *scanner(void *) {
     for (int i = 0; i < 120; i++) {
         gothook::scan(g_entries, g_n, "/data/", g_self);
+        // Java GLES10/GLES20.glGetString goes through libandroid_runtime
+        gothook::scan(g_entries, g_n, "/system/lib64/libandroid_runtime.so", g_self);
         usleep(500000);
     }
     return nullptr;

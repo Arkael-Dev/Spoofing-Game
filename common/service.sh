@@ -7,3 +7,5 @@ until [ "$(getprop sys.boot_completed)" = "1" ]; do sleep 1; done
 sleep 5
 settings put system min_refresh_rate "$REFRESH"
 settings put system peak_refresh_rate "$REFRESH"
+[ "$GPU_AUTO" = "1" ] && sh "$MODDIR/detect.sh" --merge
+sh "$MODDIR/downscale.sh"
