@@ -13,14 +13,30 @@ jobs:
       - uses: actions/checkout@v4
       - name: Cek syntax script
         run: for f in install.sh UNLOCKER apply.sh common/*.sh; do sh -n "$f" || exit 1; done
+      - name: Build Zygisk GPU hook
+        run: |
+          NDK="${ANDROID_NDK_LATEST_HOME:-$ANDROID_NDK_HOME}"
+          cd native
+          curl -fsSL https://raw.githubusercontent.com/topjohnwu/zygisk-module-sample/master/module/jni/zygisk.hpp -o zygisk.hpp
+          git clone --depth 1 https://github.com/jmpews/Dobby.git Dobby
+          cmake -B build -DCMAKE_TOOLCHAIN_FILE="$NDK/build/cmake/android.toolchain.cmake" \
+            -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 -DANDROID_STL=c++_static \
+            -DCMAKE_BUILD_TYPE=Release
+          cmake --build build -j"$(nproc)"
+          mkdir -p ../zygisk
+          cp build/arm64-v8a.so ../zygisk/arm64-v8a.so
+          "$NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip" ../zygisk/arm64-v8a.so || true
       - name: Package
         id: pkg
         run: |
           ID=$(grep '^id=' module.prop | cut -d= -f2)
           VER=$(grep '^version=' module.prop | cut -d= -f2)
+          CODE=$(grep '^versionCode=' module.prop | cut -d= -f2)
           ZIP="$ID-$VER.zip"
-          zip -r9 "$ZIP" . -x '.git/*' '.github/*' '.gitignore' 'README.md' '*.zip'
+          zip -r9 "$ZIP" . -x '.git/*' '.github/*' '.gitignore' 'README.md' 'update.json' 'native/*' '*.zip'
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
+          echo "ver=$VER" >> "$GITHUB_OUTPUT"
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.pkg.outputs.zip }}
@@ -30,3 +46,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.pkg.outputs.zip }}
+      - name: Update update.json
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          git fetch origin main
+          git checkout -f main
+          printf '{\n  "version": "%s",\n  "versionCode": %s,\n  "zipUrl": "https://github.com/${{ github.repository }}/releases/download/%s/%s",\n  "changelog": "https://raw.githubusercontent.com/${{ github.repository }}/main/CHANGELOG.md"\n}\n' "${{ steps.pkg.outputs.ver }}" "${{ steps.pkg.outputs.code }}" "$GITHUB_REF_NAME" "${{ steps.pkg.outputs.zip }}" > update.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add update.json
+          git diff --cached --quiet || (git commit -m "update.json ${{ steps.pkg.outputs.ver }}" && git push origin main)

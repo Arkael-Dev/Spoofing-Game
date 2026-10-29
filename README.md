@@ -1,55 +1,29 @@
 # Spoofing Game
 
-
-
 ![Build](https://github.com/Arkael-Dev/Spoofing-Game/actions/workflows/build.yml/badge.svg)
 
+**EN** KernelSU / KernelSU Next / Magisk module that spoofs device model, SoC and GPU so games unlock higher graphics and FPS options. Default: POCO F9 Ultra (`26077PC53G`, Adreno 840). Everything is editable in the WebUI.
+**ID** Modul KernelSU / KernelSU Next / Magisk untuk spoof model, SoC, dan GPU supaya game membuka opsi grafik dan FPS lebih tinggi. Semua bisa diubah di WebUI.
 
+## Features / Fitur
+- Device name, model code, brand, manufacturer, SoC, OpenGL ES, `/proc/cpuinfo`
+- GPU spoof (OpenGL ES + Vulkan) per game package, needs Zygisk (Zygisk Next)
+- Refresh rate 60 / 90 / 120 / 144 Hz
+- WebUI in English and Indonesian
 
-Modul KernelSU / KernelSU Next / Magisk untuk spoof perangkat supaya game membuka opsi grafik dan FPS yang lebih tinggi. Bawaan: POCO F9 Ultra (`26077PC53G`).
+## Install / Pasang
+1. Download the latest zip from Releases / Unduh zip terbaru dari Releases.
+2. Flash in KernelSU Next or Magisk, enable Zygisk, reboot / Flash, aktifkan Zygisk, reboot.
+3. Open WebUI, pick or type your target device, tap Save and apply / Buka WebUI, pilih atau isi perangkat tujuan, tekan Simpan dan terapkan.
+4. Force-stop the game and reopen / Tutup paksa game lalu buka lagi.
 
-## Fitur
-
-- Spoof model, nama perangkat, brand, produsen, kode SoC, dan versi OpenGL ES
-- Spoof `/proc/cpuinfo`
-- Paksa refresh rate (60 / 90 / 120 / 144 Hz)
-- WebUI di KSU Next untuk ganti perangkat tujuan tanpa edit file
-- Banner modul
-
-## Pasang
-
-1. Unduh zip terbaru dari halaman Releases.
-2. Flash lewat KernelSU Next atau Magisk.
-3. Reboot.
-4. Buka WebUI dari daftar modul, pilih perangkat tujuan, lalu tekan Simpan dan terapkan.
-5. Tutup paksa game, lalu buka lagi.
-
-## Konfigurasi
-
-Pengaturan tersimpan di `/data/adb/modules/Spoofing/config.conf`.
-
-    MARKET   nama perangkat (ro.product.marketname)
-    MODEL    kode model (ro.product.model)
-    BRAND    brand
-    MFR      produsen
-    SOC      kode SoC, contoh SM8850
-    SOCNAME  nama SoC
-    REFRESH  refresh rate dalam Hz
-    ENABLED  1 = aktif, 0 = nonaktif
-
-Menambah preset: edit objek `PRESETS` di `webroot/index.html`.
-
-## Catatan
-
-- Spoof GPU belum ada. Game membaca nama GPU langsung dari driver, jadi perlu modul Zygisk terpisah.
-- GPU asli tetap dipakai. Preset grafik yang terbuka bisa membuat lag atau panas.
-- Server game atau anti-cheat bisa menolak perangkat hasil spoof. Pakai dengan risiko sendiri.
-- Bootloop: masuk mode aman atau recovery, lalu hapus `/data/adb/modules/Spoofing`.
+## Notes / Catatan
+- GPU spoof only changes the names games read. The real GPU still renders, so heavy presets can lag or heat up. / Spoof GPU hanya mengubah nama yang dibaca game. GPU asli tetap yang merender.
+- Anti-cheat or servers may reject spoofed devices. Use at your own risk. / Anti-cheat atau server bisa menolak perangkat hasil spoof.
+- Bootloop: safe mode or recovery, delete `/data/adb/modules/Spoofing`.
 
 ## Build
+Push to `main` builds an artifact; push a `v*` tag for a Release.
 
-Setiap push ke `main` menjalankan GitHub Actions dan menghasilkan zip sebagai artifact. Push tag `v*` untuk membuat Release otomatis.
-
-## Lisensi
-
-MIT. Lihat berkas LICENSE.
+## License / Lisensi
+MIT, see LICENSE.

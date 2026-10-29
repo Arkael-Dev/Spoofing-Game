@@ -12,19 +12,23 @@ print_modname() {
   ui_print "          Arkael-Dev"
   ui_print "*******************************"
   ui_print " Kernel    : $(uname -r)"
-  ui_print " Device    : $(getprop ro.product.name)"
   ui_print " Model     : $(getprop ro.product.model)"
   ui_print " Android   : $(getprop ro.system.build.version.release)"
-  ui_print " Processor : $(getprop ro.board.platform)"
+  ui_print " GPU spoof needs Zygisk / spoof GPU butuh Zygisk"
+  ui_print " Open WebUI to configure / Buka WebUI untuk atur"
 }
 
 on_install() {
   ui_print "- Extracting module files"
-  unzip -o "$ZIPFILE" 'UNLOCKER' 'apply.sh' 'config.default' 'banner.png' 'webroot/*' -d $MODPATH >&2
+  unzip -o "$ZIPFILE" 'UNLOCKER' 'apply.sh' 'config.default' 'banner.png' 'webroot/*' 'zygisk/*' -d $MODPATH >&2
   OLD=/data/adb/modules/Spoofing/config.conf
   if [ -f "$OLD" ]; then
     cp -f "$OLD" $MODPATH/config.conf
-    ui_print "- Config lama dipertahankan"
+    while IFS= read -r l; do
+      k=${l%%=*}
+      grep -q "^$k=" $MODPATH/config.conf || echo "$l" >> $MODPATH/config.conf
+    done < $MODPATH/config.default
+    ui_print "- Config kept / Config lama dipertahankan"
   else
     cp -f $MODPATH/config.default $MODPATH/config.conf
   fi
