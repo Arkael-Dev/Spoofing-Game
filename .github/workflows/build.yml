@@ -18,9 +18,12 @@ jobs:
         run: |
           ID=$(grep '^id=' module.prop | cut -d= -f2)
           VER=$(grep '^version=' module.prop | cut -d= -f2)
+          CODE=$(grep '^versionCode=' module.prop | cut -d= -f2)
           ZIP="$ID-$VER.zip"
-          zip -r9 "$ZIP" . -x '.git/*' '.github/*' '.gitignore' 'README.md' '*.zip'
+          zip -r9 "$ZIP" . -x '.git/*' '.github/*' '.gitignore' 'README.md' 'update.json' '*.zip'
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
+          echo "ver=$VER" >> "$GITHUB_OUTPUT"
+          echo "code=$CODE" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.pkg.outputs.zip }}
@@ -30,3 +33,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: ${{ steps.pkg.outputs.zip }}
+      - name: Update update.json
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          git fetch origin main
+          git checkout -f main
+          printf '{\n  "version": "%s",\n  "versionCode": %s,\n  "zipUrl": "https://github.com/${{ github.repository }}/releases/download/%s/%s",\n  "changelog": "https://raw.githubusercontent.com/${{ github.repository }}/main/CHANGELOG.md"\n}\n' "${{ steps.pkg.outputs.ver }}" "${{ steps.pkg.outputs.code }}" "$GITHUB_REF_NAME" "${{ steps.pkg.outputs.zip }}" > update.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add update.json
+          git diff --cached --quiet || (git commit -m "update.json ${{ steps.pkg.outputs.ver }}" && git push origin main)
