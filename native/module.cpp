@@ -105,10 +105,17 @@ public:
     void onLoad(zygisk::Api *api, JNIEnv *env) override { api_ = api; env_ = env; }
 
     void preAppSpecialize(zygisk::AppSpecializeArgs *args) override {
-        const char *nn = env_->GetStringUTFChars(args->nice_name, nullptr);
+        const char *nn = args->nice_name ? env_->GetStringUTFChars(args->nice_name, nullptr) : nullptr;
         std::string proc = nn ? nn : "";
         if (nn) env_->ReleaseStringUTFChars(args->nice_name, nn);
         proc = proc.substr(0, proc.find(':'));
+        // Never touch module fds in zygote-type processes (webview_zygote,
+        // <pkg>_zygote): a leaked fd there makes the zygote abort on fork
+        // (FileDescriptorInfo::CreateFromFd) and browsers stop opening.
+        if (proc.empty() || (proc.size() >= 6 && proc.compare(proc.size() - 6, 6, "zygote") == 0)) {
+            api_->setOption(zygisk::Option::DLCLOSE_MODULE_LIBRARY);
+            return;
+        }
 
         std::string txt;
         int dir = api_->getModuleDir();
