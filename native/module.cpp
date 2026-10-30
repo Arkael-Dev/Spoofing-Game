@@ -2,6 +2,9 @@
 //  - GPU spoof: GL_RENDERER / GL_VENDOR and the Vulkan device name
 //  - device spoof (DEV_MODE="game"): model, brand, manufacturer, SoC
 //    through android.os.Build and the native system property readers
+//  - PROFILES: per-package overrides of the GPU/device values above.
+//    Format: "pkg1:MARKET;MODEL;BRAND;MFR;SOC;SOCNAME;GPU_RENDERER;GPU_VENDOR,pkg2:..."
+//    An empty field keeps the global value for that field.
 #include <dlfcn.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -34,6 +37,34 @@ static std::string cfgGet(const std::string &txt, const char *key) {
         p += k.size();
     }
     return "";
+}
+
+// Finds the "pkg:field1;field2;...;field8" segment for proc inside PROFILES
+// and splits it into out[0..7] (MARKET,MODEL,BRAND,MFR,SOC,SOCNAME,
+// GPU_RENDERER,GPU_VENDOR). Missing/empty fields are left as "".
+static bool profileFor(const std::string &profiles, const std::string &proc, std::string out[8]) {
+    size_t p = 0;
+    while (p <= profiles.size()) {
+        size_t comma = profiles.find(',', p);
+        size_t end = comma == std::string::npos ? profiles.size() : comma;
+        std::string seg = profiles.substr(p, end - p);
+        size_t colon = seg.find(':');
+        if (colon != std::string::npos && seg.substr(0, colon) == proc) {
+            std::string fields = seg.substr(colon + 1);
+            size_t fp = 0;
+            for (int i = 0; i < 8 && fp <= fields.size(); i++) {
+                size_t sc = fields.find(';', fp);
+                size_t fend = sc == std::string::npos ? fields.size() : sc;
+                out[i] = fields.substr(fp, fend - fp);
+                if (sc == std::string::npos) break;
+                fp = sc + 1;
+            }
+            return true;
+        }
+        if (comma == std::string::npos) break;
+        p = comma + 1;
+    }
+    return false;
 }
 
 typedef const unsigned char *(*GetString_t)(unsigned int);
@@ -199,20 +230,38 @@ public:
         if (cfgGet(txt, "ENABLED") == "1") {
             std::string apps = "," + cfgGet(txt, "GPU_APPS") + ",";
             if (apps.find("," + proc + ",") != std::string::npos) {
+                bool devMode = cfgGet(txt, "DEV_MODE") == "game";
                 if (cfgGet(txt, "GPU_ENABLED") == "1") {
                     g_renderer = cfgGet(txt, "GPU_RENDERER");
                     g_vendor = cfgGet(txt, "GPU_VENDOR");
                     gpuOn_ = true;
                 }
-                if (cfgGet(txt, "DEV_MODE") == "game") {
+                if (devMode) {
                     g_model = cfgGet(txt, "MODEL");
                     g_market = cfgGet(txt, "MARKET");
                     g_brand = cfgGet(txt, "BRAND");
                     g_mfr = cfgGet(txt, "MFR");
                     g_soc = cfgGet(txt, "SOC");
                     g_socname = cfgGet(txt, "SOCNAME");
-                    devOn_ = !g_model.empty();
                 }
+                // Per-game profile: only the fields it sets are overridden,
+                // everything else keeps the global value chosen above.
+                std::string pf[8];
+                if (profileFor(cfgGet(txt, "PROFILES"), proc, pf)) {
+                    if (gpuOn_) {
+                        if (!pf[6].empty()) g_renderer = pf[6];
+                        if (!pf[7].empty()) g_vendor = pf[7];
+                    }
+                    if (devMode) {
+                        if (!pf[0].empty()) g_market = pf[0];
+                        if (!pf[1].empty()) g_model = pf[1];
+                        if (!pf[2].empty()) g_brand = pf[2];
+                        if (!pf[3].empty()) g_mfr = pf[3];
+                        if (!pf[4].empty()) g_soc = pf[4];
+                        if (!pf[5].empty()) g_socname = pf[5];
+                    }
+                }
+                if (devMode) devOn_ = !g_model.empty();
             }
         }
         LOGI("%s: gpu=%d dev=%d", proc.c_str(), (int) gpuOn_, (int) devOn_);

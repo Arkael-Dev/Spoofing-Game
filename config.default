@@ -15,3 +15,4 @@ GPU_APPS="com.mobile.legends,com.tencent.ig,com.dts.freefireth,com.dts.freefirem
 GPU_AUTO="1"
 DOWNSCALE=""
 SMOOTH=""
+PROFILES=""
