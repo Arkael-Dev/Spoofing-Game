@@ -23,9 +23,8 @@
 - Bootloop: safe mode or recovery, delete `/data/adb/modules/Spoofing`.
 
 ## Build
-Push to `main` builds artifacts (module zip and `-debug` zip).
-Push a tag for a Release: `v1.8-beta1` (with a dash) = pre-release, `v1.8` = full release and `update.json`.
-The `-debug` zip logs to logcat: `logcat -s SpoofGame`.
+Push to `main` builds the module zip as an artifact.
+Push a tag for a Release: `v1.8` = full release and `update.json`. A tag with a dash (e.g. `v1.9-beta1`) = pre-release.
 
 ## License / Lisensi
 MIT, see LICENSE.
