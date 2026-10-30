@@ -1,7 +1,7 @@
 id=Spoofing
 name=Spoofing Game
-version=v1.9
-versionCode=11
+version=v2.0
+versionCode=12
 author=@arqzey
 description=Unlock game graphics & FPS via device + GPU spoof, configure in WebUI. | Unlock grafik & FPS game lewat spoof device + GPU, atur lewat WebUI.
 banner=banner.png
