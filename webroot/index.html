@@ -5,68 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Spoofing Game</title>
 <style>
-:root{--bg:#f2f4f9;--card:#fff;--ink:#141a2e;--mut:#59627f;--line:#d9deeb;--acc:#ffc400;--acc2:#ff7a1a;--onacc:#141a2e;--glow:255,196,0;color-scheme:light}
-@media(prefers-color-scheme:dark){:root{--bg:#070b16;--card:#121a2e;--ink:#eaf1ff;--mut:#8591b8;--line:#223055;--acc:#22d3ee;--acc2:#ff7a1a;--onacc:#06111f;--glow:34,211,238;color-scheme:dark}}
+:root{--bg:#f2f4f9;--card:#fff;--ink:#141a2e;--mut:#59627f;--line:#d9deeb;--acc:#ffc400;--onacc:#141a2e;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--bg:#121a2b;--card:#1a2440;--ink:#eaf0ff;--mut:#93a0c4;--line:#2c3860;color-scheme:dark}}
 *{box-sizing:border-box}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(var(--glow),.55)}50%{box-shadow:0 0 0 6px rgba(var(--glow),0)}}
-@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-14px,10px)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:max(20px,env(safe-area-inset-top)) 18px 40px;position:relative;overflow-x:hidden}
-body::before,body::after{content:'';position:fixed;width:46vmax;height:46vmax;border-radius:50%;filter:blur(70px);opacity:.16;z-index:-1;pointer-events:none;animation:drift 22s ease-in-out infinite}
-body::before{top:-18vmax;right:-14vmax;background:var(--acc)}
-body::after{bottom:-20vmax;left:-16vmax;background:var(--acc2);animation-delay:-11s}
-main{max-width:560px;margin:0 auto;animation:fadeUp .5s ease both}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:max(20px,env(safe-area-inset-top)) 18px 40px}
+main{max-width:560px;margin:0 auto}
 .top{display:flex;justify-content:space-between;align-items:start;gap:12px}
-h1{font-size:28px;letter-spacing:-.02em;margin:6px 0 2px;font-weight:800;background:linear-gradient(100deg,var(--ink) 30%,var(--acc) 65%,var(--acc2));background-clip:text;-webkit-background-clip:text;color:transparent}
+h1{font-size:28px;letter-spacing:-.02em;margin:6px 0 2px;font-weight:800}
 .by{color:var(--mut);margin:0 0 20px;font-size:14px}
-#lang{font:inherit;font-weight:700;font-size:14px;padding:7px 12px;border-radius:99px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);margin-top:8px;transition:border-color .2s,transform .15s}
-#lang:active{transform:scale(.94)}
-.plate{background:linear-gradient(180deg,var(--card),var(--card)) padding-box,linear-gradient(135deg,var(--acc),var(--acc2)) border-box;border:1px solid transparent;border-left:6px solid var(--acc);border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 0 0 1px rgba(var(--glow),.05),0 8px 24px -16px rgba(var(--glow),.5);transition:box-shadow .3s}
+#lang{font:inherit;font-weight:700;font-size:14px;padding:7px 12px;border-radius:99px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);margin-top:8px}
+.plate{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--acc);border-radius:6px;padding:14px 16px;margin-bottom:12px}
 .plate small{color:var(--mut);display:block;font-size:13px}
 .plate b{display:block;font-size:22px;letter-spacing:.01em}
 .row{display:flex;justify-content:space-between;gap:12px;align-items:end;flex-wrap:wrap}
-.state{position:relative;font-size:13px;font-weight:700;padding:3px 10px 3px 20px;border-radius:99px;background:var(--line);color:var(--ink)}
-.state::before{content:'';position:absolute;left:9px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--mut)}
-.state.on{background:rgba(var(--glow),.16);color:var(--ink);box-shadow:inset 0 0 0 1px rgba(var(--glow),.4)}
-.state.on::before{background:var(--acc);animation:pulseDot 1.6s ease-in-out infinite}
+.state{font-size:13px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--line);color:var(--ink)}
+.state.on{background:var(--acc);color:var(--onacc)}
 h2{font-size:15px;margin:22px 0 10px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.chip{font:inherit;font-weight:600;padding:9px 16px;border-radius:99px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);transition:transform .15s,border-color .2s,background .2s,color .2s}
-.chip:active{transform:scale(.95)}
-.chip[aria-pressed=true]{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;color:var(--onacc);box-shadow:0 4px 16px -6px rgba(var(--glow),.6)}
+.chip{font:inherit;font-weight:600;padding:9px 16px;border-radius:99px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
 label{display:block;margin:0 0 12px;font-size:14px;color:var(--mut)}
-input,select,textarea{display:block;width:100%;margin-top:4px;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:6px;padding:11px 12px;transition:border-color .2s,box-shadow .2s}
+input,select,textarea{display:block;width:100%;margin-top:4px;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:6px;padding:11px 12px}
 textarea{min-height:110px;resize:vertical;font-size:14px}
-input:focus,select:focus,textarea:focus,.chip:focus-visible,button:focus-visible{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(var(--glow),.25)}
+input:focus,select:focus,textarea:focus,.chip:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .sw{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 14px;margin:6px 0 14px;color:var(--ink);font-size:15px}
-.sw input{appearance:none;-webkit-appearance:none;width:44px;height:26px;margin:0;border-radius:99px;background:var(--line);position:relative;cursor:pointer;transition:background .25s ease;flex:none}
-.sw input::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.4);transition:transform .25s cubic-bezier(.4,0,.2,1)}
-.sw input:checked{background:linear-gradient(135deg,var(--acc),var(--acc2))}
-.sw input:checked::after{transform:translateX(18px)}
-.go{width:100%;font:inherit;font-weight:800;padding:14px;border:0;border-radius:8px;background:linear-gradient(135deg,var(--acc),var(--acc2));background-size:160% 160%;color:var(--onacc);margin-top:6px;box-shadow:0 10px 24px -10px rgba(var(--glow),.55);transition:transform .15s,box-shadow .2s,background-position .4s}
-.go:hover{background-position:100% 0}
-.go:active{transform:scale(.98)}
-.ghost{width:100%;font:inherit;font-weight:600;padding:12px;margin-top:10px;border:1.5px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);transition:border-color .2s,background .2s,transform .15s}
-.ghost:active{transform:scale(.98)}
+.sw input{width:22px;height:22px;margin:0;accent-color:#c99700}
+.go{width:100%;font:inherit;font-weight:800;padding:14px;border:0;border-radius:6px;background:var(--acc);color:var(--onacc);margin-top:6px}
+.ghost{width:100%;font:inherit;font-weight:600;padding:12px;margin-top:10px;border:1.5px solid var(--line);border-radius:6px;background:transparent;color:var(--ink)}
 .note{color:var(--mut);font-size:13px;margin:10px 0 0}
-.app{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px 10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:0 0 6px;font-size:13px;transition:border-color .2s,transform .15s}
-.app:hover{border-color:rgba(var(--glow),.45)}
-.app .pk{grid-column:1/-1;word-break:break-all}
-.app select{width:auto;margin:0;padding:6px 8px;font-size:14px}
-.app input[type=checkbox]{width:22px;height:22px;margin:0;accent-color:var(--acc)}
-.grp{color:var(--mut);font-size:13px;margin:12px 0 6px}
-.app .profbtn{grid-column:1/-1;font:inherit;font-size:12px;font-weight:600;text-align:left;background:transparent;border:1px dashed var(--line);border-radius:6px;padding:6px 8px;color:var(--mut);margin-top:4px;transition:border-color .2s,color .2s}
-.app .profbtn:active{transform:scale(.98)}
-.app .prof{grid-column:1/-1;max-height:0;overflow:hidden;opacity:0;border-top:0 dashed var(--line);transition:max-height .35s ease,opacity .25s ease,margin-top .3s ease,padding-top .3s ease,border-top-width .3s ease}
-.app .prof.show{max-height:900px;opacity:1;margin-top:6px;padding-top:8px;border-top-width:1px}
-.app .prof .two label{margin-bottom:8px}
-.app .prof .two input{padding:8px 9px;font-size:13px}
-.app .prof .ghost{padding:9px;font-size:13px}
-#toast{position:fixed;left:16px;right:16px;bottom:max(16px,env(safe-area-inset-bottom));max-width:528px;margin:0 auto;background:var(--ink);color:var(--bg);padding:12px 14px;border-radius:8px;font-size:14px;opacity:0;transform:translateY(8px) scale(.98);transition:.25s cubic-bezier(.34,1.56,.64,1);pointer-events:none;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)}
+.app{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px 10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:0 0 6px;font-size:13px}.app .pk{grid-column:1/-1;word-break:break-all}.app select{width:auto;margin:0;padding:6px 8px;font-size:14px}.app input[type=checkbox]{width:22px;height:22px;margin:0;accent-color:#c99700}.grp{color:var(--mut);font-size:13px;margin:12px 0 6px}
+#toast{position:fixed;left:16px;right:16px;bottom:max(16px,env(safe-area-inset-bottom));max-width:528px;margin:0 auto;background:var(--ink);color:var(--bg);padding:12px 14px;border-radius:6px;font-size:14px;opacity:0;transform:translateY(8px);transition:.2s;pointer-events:none}
 #toast.show{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
 </style>
 </head>
 <body>
@@ -123,34 +94,16 @@ const MOD='/data/adb/modules/Spoofing';
 const KEYS=['MARKET','MODEL','BRAND','MFR','SOC','SOCNAME','GPU_RENDERER','GPU_VENDOR'];
 const PRESETS={f8u:{label:'POCO F8 Ultra',MARKET:'POCO F8 Ultra',MODEL:'25102PCBEG',BRAND:'POCO',MFR:'Xiaomi',SOC:'SM8850',SOCNAME:'Snapdragon 8 Elite Gen 5',GPU_RENDERER:'Adreno (TM) 840',GPU_VENDOR:'Qualcomm'},f9u:{label:'POCO F9 Ultra',MARKET:'POCO F9 Ultra',MODEL:'26077PC53G',BRAND:'POCO',MFR:'Xiaomi',SOC:'SM8850',SOCNAME:'Snapdragon 8 Elite Gen 5',GPU_RENDERER:'Adreno (TM) 840',GPU_VENDOR:'Qualcomm'}};
 const T={
-id:{now:'Perangkat terbaca sistem sekarang',gpuReal:'GPU asli',on:'spoof aktif',off:'belum aktif',fromNow:'Isi dari nilai terbaca',target:'Perangkat tujuan',custom:'Kustom',name:'Nama perangkat',model:'Kode model',brand:'Brand',mfr:'Produsen',socCode:'Kode SoC (chipset)',socName:'Nama SoC',gpuTitle:'Spoof GPU',gpuOn:'Spoof GPU aktif',gpuName:'Nama GPU (GL_RENDERER)',gpuVendor:'Vendor GPU',gpuApps:'Paket game, satu per baris',devMode:'Cara spoof model & SoC',devGlobal:'Global (semua aplikasi)',devGame:'Hanya game pilihan (Zygisk)',devGameState:'spoof per game',devNote:'Mode "hanya game" memakai daftar game di bawah, aplikasi lain melihat perangkat asli. Reboot setelah mengganti mode. Game yang membaca model lewat jalur lain bisa tetap melihat nilai asli.',appsTitle:'Aplikasi: spoof GPU & downscale',autoOn:'Deteksi game otomatis saat boot',detect:'Deteksi game terpasang',listed:'Terdeteksi / dipilih',downscale:'Downscale',dsOff:'Res asli',fpsOff:'FPS bebas',tool:'alat uji',empty:'Belum ada game dikenal yang terdeteksi.',found:'Terdeteksi: ',appsNote:'Centang = spoof GPU untuk aplikasi itu. Downscale menurunkan resolusi render, dan kunci FPS menjaga frame rate tetap stabil (anti lag smooth). Keduanya per aplikasi lewat Game Mode Android (cmd game), efeknya tergantung ROM dan game. Game yang tidak dikenal: tambahkan nama paketnya di kotak daftar paket di atas.',gpuNote:'Perlu Zygisk. Hanya berlaku untuk game di daftar. Aktif saat game dibuka lagi, tanpa reboot.',display:'Layar dan status',refresh:'Refresh rate (Hz)',spoofOn:'Spoof aktif',save:'Simpan dan terapkan',reset:'Kembalikan ke bawaan modul',note:'Setelah disimpan, tutup paksa game lalu buka lagi. Reboot sekali supaya semua proses memakai nilai baru. Mematikan spoof baru kembali ke nilai asli setelah reboot.',saved:'Tersimpan. Tutup paksa game lalu buka lagi.',fail:'Gagal: ',need:'Isi nama perangkat dan kode model dulu.',resetOk:'Dikembalikan ke bawaan modul.',filled:'Nilai terbaca sudah diisi. Ubah sesuai keinginan lalu simpan.',noKsu:'Buka dari KSU Next > Modul > WebUI',unknown:'tidak terbaca',profileBtn:'Profil khusus game ini',profileNote:'Isi hanya yang ingin beda dari pengaturan global di atas. Nilai GPU dipakai saat Spoof GPU aktif, nilai perangkat dipakai saat mode "Hanya game pilihan". Kosong = ikut global.',profileClear:'Hapus profil, ikut global'},
-en:{now:'Device as read by the system now',gpuReal:'Real GPU',on:'spoof active',off:'not active',fromNow:'Fill from current values',target:'Target device',custom:'Custom',name:'Device name',model:'Model code',brand:'Brand',mfr:'Manufacturer',socCode:'SoC code (chipset)',socName:'SoC name',gpuTitle:'GPU spoof',gpuOn:'GPU spoof enabled',gpuName:'GPU name (GL_RENDERER)',gpuVendor:'GPU vendor',gpuApps:'Game packages, one per line',devMode:'Model & SoC spoof method',devGlobal:'Global (all apps)',devGame:'Selected games only (Zygisk)',devGameState:'per-game spoof',devNote:'"Selected games only" uses the game list below; other apps see the real device. Reboot after changing the mode. Games that read the model through other paths may still see the real value.',appsTitle:'Apps: GPU spoof & downscale',autoOn:'Auto-detect games at boot',detect:'Detect installed games',listed:'Detected / selected',downscale:'Downscale',dsOff:'Native res',fpsOff:'FPS free',tool:'test tool',empty:'No known games detected yet.',found:'Detected: ',appsNote:'Checked = GPU spoof for that app. Downscale lowers the render resolution and the FPS lock keeps the frame rate steady (anti lag smooth). Both are per app through Android Game Mode (cmd game); the effect depends on ROM and game. Unknown games: add their package name to the package list box above.',gpuNote:'Requires Zygisk. Only applies to the listed games. Takes effect the next time a game starts, no reboot needed.',display:'Display and status',refresh:'Refresh rate (Hz)',spoofOn:'Spoof enabled',save:'Save and apply',reset:'Reset to module defaults',note:'After saving, force-stop the game and reopen it. Reboot once so every process uses the new values. Turning spoof off restores the real values only after a reboot.',saved:'Saved. Force-stop the game and reopen it.',fail:'Failed: ',need:'Enter a device name and model code first.',resetOk:'Reset to module defaults.',filled:'Current values filled in. Edit them, then save.',noKsu:'Open from KSU Next > Modules > WebUI',unknown:'unreadable',profileBtn:'Custom profile for this game',profileNote:'Fill in only what should differ from the global settings above. GPU values apply when GPU spoof is enabled, device values apply in "Selected games only" mode. Empty = use global.',profileClear:'Clear profile, use global'}
+id:{now:'Perangkat terbaca sistem sekarang',gpuReal:'GPU asli',on:'spoof aktif',off:'belum aktif',fromNow:'Isi dari nilai terbaca',target:'Perangkat tujuan',custom:'Kustom',name:'Nama perangkat',model:'Kode model',brand:'Brand',mfr:'Produsen',socCode:'Kode SoC (chipset)',socName:'Nama SoC',gpuTitle:'Spoof GPU',gpuOn:'Spoof GPU aktif',gpuName:'Nama GPU (GL_RENDERER)',gpuVendor:'Vendor GPU',gpuApps:'Paket game, satu per baris',devMode:'Cara spoof model & SoC',devGlobal:'Global (semua aplikasi)',devGame:'Hanya game pilihan (Zygisk)',devGameState:'spoof per game',devNote:'Mode "hanya game" memakai daftar game di bawah, aplikasi lain melihat perangkat asli. Reboot setelah mengganti mode. Game yang membaca model lewat jalur lain bisa tetap melihat nilai asli.',appsTitle:'Aplikasi: spoof GPU & downscale',autoOn:'Deteksi game otomatis saat boot',detect:'Deteksi game terpasang',listed:'Terdeteksi / dipilih',downscale:'Downscale',dsOff:'Res asli',fpsOff:'FPS bebas',tool:'alat uji',empty:'Belum ada game dikenal yang terdeteksi.',found:'Terdeteksi: ',appsNote:'Centang = spoof GPU untuk aplikasi itu. Downscale menurunkan resolusi render, dan kunci FPS menjaga frame rate tetap stabil (anti lag smooth). Keduanya per aplikasi lewat Game Mode Android (cmd game), efeknya tergantung ROM dan game. Game yang tidak dikenal: tambahkan nama paketnya di kotak daftar paket di atas.',gpuNote:'Perlu Zygisk. Hanya berlaku untuk game di daftar. Aktif saat game dibuka lagi, tanpa reboot.',display:'Layar dan status',refresh:'Refresh rate (Hz)',spoofOn:'Spoof aktif',save:'Simpan dan terapkan',reset:'Kembalikan ke bawaan modul',note:'Setelah disimpan, tutup paksa game lalu buka lagi. Reboot sekali supaya semua proses memakai nilai baru. Mematikan spoof baru kembali ke nilai asli setelah reboot.',saved:'Tersimpan. Tutup paksa game lalu buka lagi.',fail:'Gagal: ',need:'Isi nama perangkat dan kode model dulu.',resetOk:'Dikembalikan ke bawaan modul.',filled:'Nilai terbaca sudah diisi. Ubah sesuai keinginan lalu simpan.',noKsu:'Buka dari KSU Next > Modul > WebUI',unknown:'tidak terbaca'},
+en:{now:'Device as read by the system now',gpuReal:'Real GPU',on:'spoof active',off:'not active',fromNow:'Fill from current values',target:'Target device',custom:'Custom',name:'Device name',model:'Model code',brand:'Brand',mfr:'Manufacturer',socCode:'SoC code (chipset)',socName:'SoC name',gpuTitle:'GPU spoof',gpuOn:'GPU spoof enabled',gpuName:'GPU name (GL_RENDERER)',gpuVendor:'GPU vendor',gpuApps:'Game packages, one per line',devMode:'Model & SoC spoof method',devGlobal:'Global (all apps)',devGame:'Selected games only (Zygisk)',devGameState:'per-game spoof',devNote:'"Selected games only" uses the game list below; other apps see the real device. Reboot after changing the mode. Games that read the model through other paths may still see the real value.',appsTitle:'Apps: GPU spoof & downscale',autoOn:'Auto-detect games at boot',detect:'Detect installed games',listed:'Detected / selected',downscale:'Downscale',dsOff:'Native res',fpsOff:'FPS free',tool:'test tool',empty:'No known games detected yet.',found:'Detected: ',appsNote:'Checked = GPU spoof for that app. Downscale lowers the render resolution and the FPS lock keeps the frame rate steady (anti lag smooth). Both are per app through Android Game Mode (cmd game); the effect depends on ROM and game. Unknown games: add their package name to the package list box above.',gpuNote:'Requires Zygisk. Only applies to the listed games. Takes effect the next time a game starts, no reboot needed.',display:'Display and status',refresh:'Refresh rate (Hz)',spoofOn:'Spoof enabled',save:'Save and apply',reset:'Reset to module defaults',note:'After saving, force-stop the game and reopen it. Reboot once so every process uses the new values. Turning spoof off restores the real values only after a reboot.',saved:'Saved. Force-stop the game and reopen it.',fail:'Failed: ',need:'Enter a device name and model code first.',resetOk:'Reset to module defaults.',filled:'Current values filled in. Edit them, then save.',noKsu:'Open from KSU Next > Modules > WebUI',unknown:'unreadable'}
 };
 let lang='id';try{lang=localStorage.getItem('lang')||(navigator.language||'').slice(0,2)==='id'?'id':'en';const s=localStorage.getItem('lang');if(s)lang=s}catch(e){lang=(navigator.language||'').slice(0,2)==='id'?'id':'en'}
 const $=s=>document.querySelector(s);
 const t=k=>T[lang][k]||k;
 const clean=v=>String(v).replace(/[^A-Za-z0-9 ._+()-]/g,'').trim();
 const cleanApps=v=>String(v).split(/[\s,]+/).map(x=>x.replace(/[^A-Za-z0-9._-]/g,'')).filter(Boolean).join(',');
-let cur={},det={games:[],tools:[]},ds={},sm={},profiles={};
+let cur={},det={games:[],tools:[]},ds={},sm={};
 const DSV=['1','0.9','0.8','0.7','0.6','0.5','0.4','0.3'],FPV=['0','30','45','60','90','120'];
-const FIELD_LABEL={MARKET:'name',MODEL:'model',BRAND:'brand',MFR:'mfr',SOC:'socCode',SOCNAME:'socName',GPU_RENDERER:'gpuName',GPU_VENDOR:'gpuVendor'};
-function parseProfiles(v){
-  const o={};
-  String(v||'').split(',').forEach(seg=>{
-    if(!seg)return;
-    const i=seg.indexOf(':');if(i<0)return;
-    const p=seg.slice(0,i).replace(/[^A-Za-z0-9._-]/g,'');
-    if(!p)return;
-    const parts=seg.slice(i+1).split(';');
-    const obj={};
-    KEYS.forEach((k,idx)=>{if(parts[idx])obj[k]=clean(parts[idx])});
-    if(Object.keys(obj).length)o[p]=obj;
-  });
-  return o;
-}
-function serializeProfiles(o){
-  return Object.entries(o).filter(([,f])=>f&&Object.keys(f).length).map(([p,f])=>p+':'+KEYS.map(k=>clean(f[k]||'')).join(';')).join(',');
-}
 const gpuSet=()=>new Set(cleanApps($('#GPU_APPS').value).split(',').filter(Boolean));
 function setGpu(p,on){const s=gpuSet();if(on)s.add(p);else s.delete(p);$('#GPU_APPS').value=[...s].join('\n')}
 function rowEl(p){
@@ -163,35 +116,7 @@ function rowEl(p){
   const f=document.createElement('select');f.setAttribute('aria-label','FPS '+p);
   FPV.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v==='0'?t('fpsOff'):v+' fps';f.appendChild(o)});
   f.value=sm[p]||'0';f.onchange=()=>{if(f.value==='0')delete sm[p];else sm[p]=f.value};
-  d.append(n,c,s,f);
-
-  const pb=document.createElement('button');pb.type='button';pb.className='profbtn';
-  const label=()=>pb.textContent=(profiles[p]?'✓ ':'')+t('profileBtn');label();
-  const panel=document.createElement('div');panel.className='prof';
-  const note=document.createElement('p');note.className='note';note.style.margin='0 0 8px';note.textContent=t('profileNote');panel.appendChild(note);
-  [['MARKET','MODEL'],['BRAND','MFR'],['SOC','SOCNAME'],['GPU_RENDERER','GPU_VENDOR']].forEach(pair=>{
-    const row=document.createElement('div');row.className='two';
-    pair.forEach(k=>{
-      const lab=document.createElement('label');
-      const sp=document.createElement('span');sp.textContent=t(FIELD_LABEL[k]);
-      const inp=document.createElement('input');inp.autocomplete='off';
-      inp.value=(profiles[p]&&profiles[p][k])||'';
-      inp.oninput=()=>{
-        profiles[p]=profiles[p]||{};
-        if(inp.value)profiles[p][k]=clean(inp.value);else delete profiles[p][k];
-        if(!Object.keys(profiles[p]).length)delete profiles[p];
-        label();
-      };
-      lab.append(sp,inp);row.appendChild(lab);
-    });
-    panel.appendChild(row);
-  });
-  const clr=document.createElement('button');clr.type='button';clr.className='ghost';clr.textContent=t('profileClear');
-  clr.onclick=()=>{delete profiles[p];panel.querySelectorAll('input').forEach(i=>i.value='');label()};
-  panel.appendChild(clr);
-  pb.onclick=()=>panel.classList.toggle('show');
-  d.append(pb,panel);
-  return d;
+  d.append(n,c,s,f);return d;
 }
 function shownList(){return [...new Set([...det.games,...det.tools,...gpuSet(),...Object.keys(ds),...Object.keys(sm)])]}
 function renderApps(){
@@ -230,7 +155,6 @@ function fill(c){
   $('#DEV_MODE').value=c.DEV_MODE==='game'?'game':'global';
   ds={};(c.DOWNSCALE||'').split(',').forEach(e=>{const i=e.indexOf('=');if(i>0){const p=e.slice(0,i).replace(/[^A-Za-z0-9._]/g,''),r=e.slice(i+1);if(p&&DSV.includes(r)&&r!=='1')ds[p]=r}});
   sm={};(c.SMOOTH||'').split(',').forEach(e=>{const i=e.indexOf('=');if(i>0){const p=e.slice(0,i).replace(/[^A-Za-z0-9._]/g,''),r=e.slice(i+1);if(p&&FPV.includes(r)&&r!=='0')sm[p]=r}});
-  profiles=parseProfiles(c.PROFILES);
   renderApps();mark();
 }
 function showCur(){
@@ -265,7 +189,7 @@ async function load(){
   renderApps();
 }
 async function save(){
-  const c={ENABLED:$('#ENABLED').checked?'1':'0',GPU_ENABLED:$('#GPU_ENABLED').checked?'1':'0',REFRESH:$('#REFRESH').value,GLES:'196610',GPU_APPS:cleanApps($('#GPU_APPS').value),GPU_AUTO:$('#GPU_AUTO').checked?'1':'0',DEV_MODE:$('#DEV_MODE').value,DOWNSCALE:Object.entries(ds).map(([p,r])=>p.replace(/[^A-Za-z0-9._]/g,'')+'='+r).join(','),SMOOTH:Object.entries(sm).map(([p,r])=>p.replace(/[^A-Za-z0-9._]/g,'')+'='+r).join(','),PROFILES:serializeProfiles(profiles)};
+  const c={ENABLED:$('#ENABLED').checked?'1':'0',GPU_ENABLED:$('#GPU_ENABLED').checked?'1':'0',REFRESH:$('#REFRESH').value,GLES:'196610',GPU_APPS:cleanApps($('#GPU_APPS').value),GPU_AUTO:$('#GPU_AUTO').checked?'1':'0',DEV_MODE:$('#DEV_MODE').value,DOWNSCALE:Object.entries(ds).map(([p,r])=>p.replace(/[^A-Za-z0-9._]/g,'')+'='+r).join(','),SMOOTH:Object.entries(sm).map(([p,r])=>p.replace(/[^A-Za-z0-9._]/g,'')+'='+r).join(',')};
   KEYS.forEach(k=>c[k]=clean($('#'+k).value));
   if(!c.MARKET||!c.MODEL){toast(t('need'));return}
   const args=Object.entries(c).map(([k,v])=>`'${k}="${v}"'`).join(' ');

@@ -8,7 +8,6 @@
 ## Features / Fitur
 - Device name, model code, brand, manufacturer, SoC, OpenGL ES, `/proc/cpuinfo`
 - GPU spoof (OpenGL ES + Vulkan) per game package, needs Zygisk (Zygisk Next)
-- Per-game profile: different target device / GPU per package, on top of the global defaults (Zygisk) / Profil per game: perangkat dan GPU tujuan berbeda per paket, di atas nilai global (Zygisk)
 - Refresh rate 60 / 90 / 120 / 144 Hz
 - WebUI in English and Indonesian
 
@@ -25,7 +24,7 @@
 
 ## Build
 Push to `main` builds the module zip as an artifact.
-Push a tag for a Release: `v1.8` = full release and `update.json`. A tag with a dash (e.g. `v1.9-beta1`) = pre-release.
+Push a tag for a Release: `v2.1` = full release and `update.json`. A tag with a dash (e.g. `v2.2-beta1`) = pre-release.
 
 ## License / Lisensi
 MIT, see LICENSE.
