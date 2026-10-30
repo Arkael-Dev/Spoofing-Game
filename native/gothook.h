@@ -20,11 +20,14 @@ static const unsigned kJump = 7, kGlob = 6, kAbs = 1;   // x86_64 (host tests)
 
 struct Ctx { const Entry *e; int n; const char *prefix; uintptr_t skip; };
 
+static int g_patched = 0;  // slots actually rewritten (for debug logs)
+
 static inline void patchSlot(void **slot, void *repl) {
     if (*slot == repl) return;
     uintptr_t pg = (uintptr_t) slot & ~(uintptr_t) (getpagesize() - 1);
     if (mprotect((void *) pg, getpagesize(), PROT_READ | PROT_WRITE) != 0) return;
     *slot = repl;
+    g_patched++;
 }
 
 static inline void walk(const ElfW(Rela) *r, size_t bytes, uintptr_t bias, const ElfW(Sym) *sym,
