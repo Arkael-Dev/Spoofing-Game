@@ -9,3 +9,4 @@ settings put system min_refresh_rate "$REFRESH"
 settings put system peak_refresh_rate "$REFRESH"
 [ "$GPU_AUTO" = "1" ] && sh "$MODDIR/detect.sh" --merge
 sh "$MODDIR/downscale.sh"
+sh "$MODDIR/perf.sh" &
