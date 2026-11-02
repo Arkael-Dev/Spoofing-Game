@@ -11,7 +11,18 @@ GLES="196610"
 GPU_ENABLED="1"
 GPU_RENDERER="Adreno (TM) 840"
 GPU_VENDOR="Qualcomm"
-GPU_APPS="com.mobile.legends,com.tencent.ig,com.dts.freefireth,com.dts.freefiremax,com.miHoYo.GenshinImpact,com.HoYoverse.hkrpgoversea,com.HoYoverse.Nap,com.activision.callofduty.shooter,com.kurogame.wutheringwaves.global"
+GPU_APPS="com.mobile.legends,com.tencent.ig,com.dts.freefireth,com.dts.freefiremax,com.miHoYo.GenshinImpact,com.HoYoverse.hkrpgoversea,com.HoYoverse.Nap,com.activision.callofduty.shooter,com.kurogame.wutheringwaves.global,ru.andr7e.deviceinfohw"
 GPU_AUTO="1"
 DOWNSCALE=""
 SMOOTH=""
+PERF_ENABLED="0"
+# EXPERIMENTAL (not exposed in the WebUI, no stable release yet): also fake
+# the kgsl GPU-chip sysfs nodes (gpu_model / max_gpuclk / gpuclk). Only
+# catches readers inside the target app's own native libraries — see
+# native/sysfshook.h. Set by hand per device, e.g.:
+# KGSL_ENABLED="1"
+# KGSL_MODEL="Adreno840v2"
+# KGSL_MHZ="1200"
+KGSL_ENABLED=""
+KGSL_MODEL=""
+KGSL_MHZ=""
