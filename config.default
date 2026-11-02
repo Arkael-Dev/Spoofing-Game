@@ -16,6 +16,9 @@ GPU_AUTO="1"
 DOWNSCALE=""
 SMOOTH=""
 PERF_ENABLED="0"
+# Language of the status notification (id / en). Empty = follow system locale.
+# The WebUI sets this to its current language on Save.
+UI_LANG=""
 # EXPERIMENTAL (not exposed in the WebUI, no stable release yet): also fake
 # the kgsl GPU-chip sysfs nodes (gpu_model / max_gpuclk / gpuclk). Only
 # catches readers inside the target app's own native libraries — see

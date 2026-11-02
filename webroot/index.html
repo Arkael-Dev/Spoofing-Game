@@ -194,11 +194,11 @@ async function load(){
   renderApps();
 }
 async function save(){
-  const c={ENABLED:$('#ENABLED').checked?'1':'0',GPU_ENABLED:$('#GPU_ENABLED').checked?'1':'0',REFRESH:$('#REFRESH').value,GLES:'196610',GPU_APPS:cleanApps($('#GPU_APPS').value),GPU_AUTO:$('#GPU_AUTO').checked?'1':'0',DEV_MODE:$('#DEV_MODE').value,DOWNSCALE:Object.entries(ds).map(([p,r])=>p.replace(/[^A-Za-z0-9._]/g,'')+'='+r).join(','),SMOOTH:Object.entries(sm).map(([p,r])=>p.replace(/[^A-Za-z0-9._]/g,'')+'='+r).join(','),PERF_ENABLED:$('#PERF_ENABLED').checked?'1':'0'};
+  const c={ENABLED:$('#ENABLED').checked?'1':'0',GPU_ENABLED:$('#GPU_ENABLED').checked?'1':'0',REFRESH:$('#REFRESH').value,GLES:'196610',GPU_APPS:cleanApps($('#GPU_APPS').value),GPU_AUTO:$('#GPU_AUTO').checked?'1':'0',DEV_MODE:$('#DEV_MODE').value,DOWNSCALE:Object.entries(ds).map(([p,r])=>p.replace(/[^A-Za-z0-9._]/g,'')+'='+r).join(','),SMOOTH:Object.entries(sm).map(([p,r])=>p.replace(/[^A-Za-z0-9._]/g,'')+'='+r).join(','),PERF_ENABLED:$('#PERF_ENABLED').checked?'1':'0',UI_LANG:lang};
   KEYS.forEach(k=>c[k]=clean($('#'+k).value));
   if(!c.MARKET||!c.MODEL){toast(t('need'));return}
   const args=Object.entries(c).map(([k,v])=>`'${k}="${v}"'`).join(' ');
-  const r=await run(`printf '%s\\n' ${args} > ${MOD}/config.conf && sh ${MOD}/apply.sh && sh ${MOD}/downscale.sh && sh ${MOD}/notify.sh`);
+  const r=await run(`printf '%s\\n' ${args} > ${MOD}/config.conf && sh ${MOD}/apply.sh && sh ${MOD}/downscale.sh && sh ${MOD}/notify.sh ${lang}`);
   toast(r.code===0?t('saved'):t('fail')+(r.err||r.code));
   fill(c);status();
 }

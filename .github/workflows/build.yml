@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Cek syntax script
-        run: for f in install.sh UNLOCKER apply.sh detect.sh downscale.sh common/*.sh; do sh -n "$f" || exit 1; done
+        run: for f in install.sh UNLOCKER apply.sh detect.sh downscale.sh perf.sh notify.sh common/*.sh; do sh -n "$f" || exit 1; done
       - name: Build Zygisk hook (release)
         run: bash native/build.sh
       - name: Package
@@ -31,10 +31,17 @@ jobs:
           name: ${{ steps.pkg.outputs.zip }}
           path: ${{ steps.pkg.outputs.zip }}
       # Tag with a dash (v1.8-beta1, v1.8-rc1) = pre-release. Tag without a dash (v1.8) = full release.
+      - name: Release notes from CHANGELOG.md
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          V="${GITHUB_REF_NAME%%-*}"
+          awk -v h="## $V" '$0==h{f=1;next} /^## /{f=0} f' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          [ -s "$RUNNER_TEMP/notes.md" ] || echo "See CHANGELOG.md" > "$RUNNER_TEMP/notes.md"
       - name: Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
+          body_path: ${{ runner.temp }}/notes.md
           files: |
             ${{ steps.pkg.outputs.zip }}
           prerelease: ${{ contains(github.ref_name, '-') }}
