@@ -31,10 +31,10 @@ esac
 
 if [ "$L" = "id" ]; then
   S_ON="Spoofing Game aktif"; S_OFF="Spoofing Game nonaktif"; S_OFFMSG="Spoof dimatikan"
-  S_PERGAME="spoof per-game"; S_GLOBAL="spoof global"; S_GAMES="Game"; S_PERF="Perf nyala"
+  S_PERGAME="spoof Zygisk"; S_GLOBAL="spoof global"; S_GAMES="Game"; S_PERF="Perf nyala"
 else
   S_ON="Spoofing Game active"; S_OFF="Spoofing Game off"; S_OFFMSG="Spoof turned off"
-  S_PERGAME="per-game spoof"; S_GLOBAL="global spoof"; S_GAMES="Games"; S_PERF="Perf on"
+  S_PERGAME="Zygisk spoof"; S_GLOBAL="global spoof"; S_GAMES="Games"; S_PERF="Perf on"
 fi
 
 parts=""

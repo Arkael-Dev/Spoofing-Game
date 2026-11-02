@@ -2,12 +2,12 @@
 
 ## v2.4
 **ID**
-- Notifikasi status setelah Simpan kini mengikuti bahasa WebUI (Indonesia / English). Jika belum pernah memilih, mengikuti bahasa sistem.
+- Notifikasi status setelah Simpan kini mengikuti bahasa WebUI (Indonesia / English). Jika belum pernah memilih, mengikuti bahasa sistem. Mode game pilihan kini tertulis "spoof Zygisk".
 - Changelog di KSU Next sekarang lengkap per versi, dua bahasa.
 - Catatan rilis GitHub otomatis diambil dari changelog ini.
 
 **EN**
-- The status notification after Save now follows the WebUI language (Indonesian / English). If none was chosen yet, it follows the system language.
+- The status notification after Save now follows the WebUI language (Indonesian / English). If none was chosen yet, it follows the system language. Selected-games mode now reads "Zygisk spoof".
 - The changelog shown in KSU Next is now complete per version, in two languages.
 - GitHub release notes are generated from this changelog.
 
