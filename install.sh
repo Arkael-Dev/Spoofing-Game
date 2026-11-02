@@ -20,7 +20,7 @@ print_modname() {
 
 on_install() {
   ui_print "- Extracting module files"
-  unzip -o "$ZIPFILE" 'UNLOCKER' 'apply.sh' 'detect.sh' 'downscale.sh' 'perf.sh' 'config.default' 'banner.png' 'webroot/*' 'zygisk/*' -d $MODPATH >&2
+  unzip -o "$ZIPFILE" 'UNLOCKER' 'apply.sh' 'detect.sh' 'downscale.sh' 'perf.sh' 'notify.sh' 'config.default' 'banner.png' 'webroot/*' 'zygisk/*' -d $MODPATH >&2
   OLD=/data/adb/modules/Spoofing/config.conf
   if [ -f "$OLD" ]; then
     cp -f "$OLD" $MODPATH/config.conf
@@ -41,6 +41,7 @@ set_permissions() {
   set_perm $MODPATH/detect.sh 0 0 0755
   set_perm $MODPATH/downscale.sh 0 0 0755
   set_perm $MODPATH/perf.sh 0 0 0755
+  set_perm $MODPATH/notify.sh 0 0 0755
   set_perm $MODPATH/service.sh 0 0 0755
   set_perm $MODPATH/post-fs-data.sh 0 0 0755
 }
