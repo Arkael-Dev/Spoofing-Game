@@ -1,4 +1,19 @@
+## v2.6
+**ID**
+- Game baru di deteksi otomatis: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
+
+**EN**
+- New games in auto-detection: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
+
+## v2.5
 # Changelog
+
+## v2.6
+**ID**
+- Game baru di deteksi otomatis: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
+
+**EN**
+- New games in auto-detection: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
 
 ## v2.5
 **ID**
