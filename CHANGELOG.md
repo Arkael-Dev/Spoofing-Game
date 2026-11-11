@@ -1,27 +1,18 @@
 # Changelog
 
+## v2.8
+**ID**
+- Default dan preset kini ZTE nubia RedMagic 12 Pro: merek ZTE, nama "nubia RedMagic 12 Pro", model `NX819J`, SM8975 Snapdragon 8 Elite Extreme Gen 6, GPU Adreno 850.
+
+**EN**
+- Default and preset are now ZTE nubia RedMagic 12 Pro: brand ZTE, name "nubia RedMagic 12 Pro", model `NX819J`, SM8975 Snapdragon 8 Elite Extreme Gen 6, Adreno 850 GPU.
+
 ## v2.7
 **ID**
 - Preset baru: RedMagic 12 Pro (global) `NX819J`, SM8975 Snapdragon 8 Elite Extreme Gen 6, Adreno 850.
 
 **EN**
 - New preset: RedMagic 12 Pro (global) `NX819J`, SM8975 Snapdragon 8 Elite Extreme Gen 6, Adreno 850.
-
-## v2.6
-**ID**
-- Game baru di deteksi otomatis: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
-
-**EN**
-- New games in auto-detection: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
-
-## v2.5
-
-## v2.6
-**ID**
-- Game baru di deteksi otomatis: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
-
-**EN**
-- New games in auto-detection: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
 
 ## v2.5
 **ID**
