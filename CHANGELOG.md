@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.8.2
+- REDMAGIC 12 Pro (NX819J) preset: nubia/nubia per reference
+- Global spoof: ro.product.device/name = NX819J (nubia profile only)
+- Spoof SoC manufacturer (ro.soc.manufacturer / Build.SOC_MANUFACTURER) in global + Zygisk game mode
+- New banner
+
 ## v2.8.1
 **ID**
 - Rilis uji update otomatis KSU Next, tanpa perubahan fitur.
