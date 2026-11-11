@@ -1,3 +1,5 @@
+# Changelog
+
 ## v2.7
 **ID**
 - Preset baru: RedMagic 12 Pro (global) `NX819J`, SM8975 Snapdragon 8 Elite Extreme Gen 6, Adreno 850.
@@ -13,7 +15,6 @@
 - New games in auto-detection: PUBG New State, Honor of Kings (sgame), Fortnite, Farlight 84.
 
 ## v2.5
-# Changelog
 
 ## v2.6
 **ID**
