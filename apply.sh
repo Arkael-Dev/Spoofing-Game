@@ -16,5 +16,12 @@ if [ "$DEV_MODE" != "game" ]; then
   rp ro.vendor.soc.model.external_name "$SOCNAME"
   rp ro.chipset "$SOC"
   rp ro.soc.manufacturer "Qualcomm"
+  # REDMAGIC 12 Pro (NX819J): device/name only for the 4 partitions listed in the reference
+  if [ "$BRAND" = "nubia" ] && [ "$MODEL" = "NX819J" ]; then
+    for P in "" system. vendor. odm.; do
+      rp ro.product.${P}device "$MODEL"
+      rp ro.product.${P}name "$MODEL"
+    done
+  fi
 fi
 rp ro.opengles.version "$GLES"
