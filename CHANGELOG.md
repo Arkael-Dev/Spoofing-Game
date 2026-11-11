@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.8.1
+**ID**
+- Rilis uji update otomatis KSU Next, tanpa perubahan fitur.
+
+**EN**
+- Auto-update test release for KSU Next, no feature changes.
+
 ## v2.8
 **ID**
 - Default dan preset kini ZTE nubia RedMagic 12 Pro: merek ZTE, nama "nubia RedMagic 12 Pro", model `NX819J`, SM8975 Snapdragon 8 Elite Extreme Gen 6, GPU Adreno 850.
