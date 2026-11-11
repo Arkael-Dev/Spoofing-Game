@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.7
+**ID**
+- Preset baru: RedMagic 12 Pro (global) `NX819J`, SM8975 Snapdragon 8 Elite Extreme Gen 6, Adreno 850.
+
+**EN**
+- New preset: RedMagic 12 Pro (global) `NX819J`, SM8975 Snapdragon 8 Elite Extreme Gen 6, Adreno 850.
+
 ## v2.5
 **ID**
 - Notifikasi status: mode "hanya game pilihan" kini tertulis "spoof Zygisk" (sebelumnya "spoof per-game"). Mode global tetap "spoof global".
