@@ -15,5 +15,6 @@ if [ "$DEV_MODE" != "game" ]; then
   rp ro.vendor.soc.model.part_name "$SOC"
   rp ro.vendor.soc.model.external_name "$SOCNAME"
   rp ro.chipset "$SOC"
+  rp ro.soc.manufacturer "Qualcomm"
 fi
 rp ro.opengles.version "$GLES"

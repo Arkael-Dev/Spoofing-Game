@@ -109,6 +109,7 @@ static void buildProps() {
     prophook::add("ro.vendor.soc.model.part_name", g_soc);
     prophook::add("ro.vendor.soc.model.external_name", g_socname);
     prophook::add("ro.chipset", g_soc);
+    if (!g_soc.empty()) prophook::add("ro.soc.manufacturer", "Qualcomm");
 }
 
 static void addPropHooks() {
@@ -226,6 +227,7 @@ public:
             setBuild(env_, "BRAND", g_brand);
             setBuild(env_, "MANUFACTURER", g_mfr);
             setBuild(env_, "SOC_MODEL", g_soc);
+            setBuild(env_, "SOC_MANUFACTURER", g_soc.empty() ? std::string() : std::string("Qualcomm"));
         }
         installHooks(gpuOn_, devOn_);
     }
